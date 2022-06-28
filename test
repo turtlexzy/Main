@@ -1,0 +1,2 @@
+local plr = game.Players.LocalPlayer.Name
+print(plr)
